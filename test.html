@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <form id="myForm" style="width: 50%">
+      <label
+        >Name:<input
+          style="width: 100%; padding: 10px; border-radius: 5px"
+          id="name"
+          name="name"
+          value="Tony"
+      /></label>
+
+      <label
+        >Email:<input
+          style="width: 100%; padding: 10px; border-radius: 5px"
+          id="email"
+          name="email_from"
+          value="tony@epik.ooo"
+      /></label>
+      <label
+        >Phone:<input
+          style="width: 100%; padding: 10px; border-radius: 5px"
+          id="phone"
+          name="phone"
+          value="09098109369"
+      /></label>
+      <input
+        type="submit"
+        value="Submit"
+        style="
+          cursor: pointer;
+          width: 100%;
+          border: none;
+          background: #4caf50;
+          color: #fff;
+          margin-top: 20px;
+          margin: 10 0 5px;
+          padding: 10px;
+          font-size: 20px;
+        "
+      />
+    </form>
+    <script>
+      function getData(form) {
+        var formData = new FormData(form);
+        let body = {};
+        for (var pair of formData.entries()) {
+          console.log(pair[0] + ": " + pair[1]);
+        }
+        const userObject = Object.fromEntries(formData);
+        console.log(JSON.stringify(userObject));
+        body = {
+          model: "crm.lead",
+          data: {
+            name: userObject.name,
+            email_from: userObject.email_from,
+            phone: userObject.phone,
+          },
+        };
+        console.log(body);
+        fetch("https://jake.odooteam.helpbots.sg:1234/api/post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data));
+      }
+      document
+        .getElementById("myForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          getData(e.target);
+        });
+    </script>
+  </body>
+</html>
